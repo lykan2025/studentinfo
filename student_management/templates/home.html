@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+         <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+              <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link mr-2 text-light h5" href="{% url 'signup'%}">Sign Up</a>
+                </li>
+
+                <li class="nav-item">
+                    {% if logs == False %}
+                    <a class="nav-link mr-2 text-light h5" href="{% url 'login'%}">Login</a>
+                    {% endif %}
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link mr-2 text-light h5" href="#">Change Password</a>
+                </li>
+                
+                <li class="nav-item">
+                    {% if logs == True %}
+                            <a class="nav-link mr-2 text-danger h5" href="{% url 'logout' %}">Logout</a>
+                    {% endif %}
+                </li>
+                
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+
+                {% if logs == True %}
+                <li class="nav-item">
+                    <a class="nav-link mr-4 text-success h5" href="{% url 'addstudent' %}">Add Student</a>
+                </li>
+                {% endif %}
+
+              </ul>
+
+              
+                <form class="form-inline my-2 my-lg-0" method='POST' action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input class="form-control mr-sm-2" type="search" 
+                        name='search' placeholder="Search by name" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+             
+
+            </div>
+
+          </nav>
+          
+          <table class="table my-3 table-bordered" style="margin: auto;">
+            <thead>
+              <tr>
+                <th scope="col">Roll no</th>
+                <th scope="col">Name</th>
+                <th scope="col">Class</th>
+                <th scope="col">School</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in student %}
+              <tr>
+                <td>{{data.Roll_no}}</td>
+                {% if logs == True %}
+                <td>
+                    <a class="nav-link mr-4" href="#">{{data.Name}}</a>
+                </td>
+                {% endif %}
+                {% if logs == False %}
+                <td>{{data.Name}}</td>
+                {% endif %}
+                <td>{{data.Class}}</td>
+                <td>{{data.School}}</td>
+                <td>{{data.Mobile}}</td>
+                <td>{{data.Address}}</td>
+                <td><button style="margin-left: 3em;">UPDATE</button></td>
+                <td><a class="nav-link mr-4" href="/delete/?d={{data.Name}}">DELETE</a></td>
+              </tr>
+              {% endfor %}
+              
+            </tbody>
+          </table>
+          
+    </body>
+</html>
